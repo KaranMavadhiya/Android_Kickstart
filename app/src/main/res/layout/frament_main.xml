@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.android.kickstart.activity.MainActivity"
+    android:background="@color/colorAccent">
+
+
+    <TextView
+        android:id="@+id/frament_main_tv_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_textview"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"/>
+
+
+</android.support.design.widget.CoordinatorLayout>
