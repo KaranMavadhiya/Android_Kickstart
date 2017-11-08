@@ -13,7 +13,7 @@ The goal of this project is to help you in your development.
 ## Utility
 * CommonUtil 
 * EncriptionUtil to encript string
-* LogUtil to she Log
+* LogUtil to Log android.Log 
 * PreferenceUtil to save SharedPreferences
 * ValidationUtil to validate data
   * isNullString
