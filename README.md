@@ -11,22 +11,13 @@ The goal of this project is to help you in your development.
 * MyProgressDialog to show progress bind with BaseActivity and BaseFragment
 
 ## Utility
-* CommonUtil 
-* EncriptionUtil to encript string
-* LogUtil to Log android.Log 
-* PreferenceUtil to save SharedPreferences
-* ValidationUtil to validate data
-  * isNullString
-  * isValidName
-  * isValidAge
-  * isValidEmailId
-  * isValidPinCode
-  * isValidPhoneNumber
-  * isValidMobile
-  * isValidUrl
-  * isValidIp
-  * isActivityForIntentAvailable
-  * isAlphaNumeric
-  * isValidUserName
-  * isInternetAvailable
-  * inputFilterAllowAlphaNumericOnly
+* BitmapUtil
+* CommonUtil
+* DateUtil
+* DialogUtil
+* EncriptionUtil 
+* LogUtil 
+* NetorkUtil
+* PreferenceUtil 
+* ValidationUtil
+* ViewUtil
