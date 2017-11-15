@@ -8,6 +8,10 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -20,6 +24,24 @@ public class ValidationUtil {
      */
     public static boolean isNullString(final String string) {
         return TextUtils.isEmpty(string) || string.equalsIgnoreCase("null");
+    }
+
+    /**
+     * @param view : view can be EditText, TextView or Spinner
+     * @return true if string is null
+     */
+    public boolean isNullString(View view) {
+        if (view != null && view instanceof EditText) {
+            EditText editText = (EditText) view;
+            return isNullString(editText.getText().toString().trim());
+        } else if (view != null && view instanceof TextView) {
+            TextView textView = (TextView) view;
+            return isNullString(textView.getText().toString().trim());
+        } else if (view != null && view instanceof Spinner) {
+            Spinner spinner = (Spinner) view;
+            return isNullString(spinner.getSelectedItem().toString().trim());
+        }
+        return false;
     }
 
     /**
@@ -41,11 +63,11 @@ public class ValidationUtil {
     }
 
     /**
-     * @param emailId to be verified
-     * @return true valid email id, false invalid email id
+     * @param email to be verified
+     * @return true valid email, false invalid email
      */
-    public static boolean isValidEmailId(final String emailId) {
-        return !isNullString(emailId) && (!TextUtils.isEmpty(emailId) && Patterns.EMAIL_ADDRESS.matcher(emailId).matches());
+    public static boolean isValidEmail(final String email) {
+        return !isNullString(email) && (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
     }
 
     /**

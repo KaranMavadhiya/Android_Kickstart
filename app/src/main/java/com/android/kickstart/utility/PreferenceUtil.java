@@ -9,9 +9,9 @@ public class PreferenceUtil {
     private android.content.SharedPreferences SharedPreferences;
     private android.content.SharedPreferences.Editor SharedPreferencesEditor;
 
-    public PreferenceUtil(Context mContext, String preferenceName) {
+    public PreferenceUtil(Context context, String preferenceName) {
         // Create SharedPreferences
-        SharedPreferences = mContext.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE);
+        SharedPreferences = context.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE);
         SharedPreferencesEditor = SharedPreferences.edit();
     }
 
