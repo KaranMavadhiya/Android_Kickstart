@@ -1,4 +1,4 @@
-package com.android.kickstart.utility;
+package com.android.kickstart.utils;
 
 import android.view.View;
 import android.view.WindowManager;
@@ -8,8 +8,8 @@ import android.view.animation.Transformation;
 
 public class ViewUtil {
 
-    /*
-     * @param view
+    /**
+     * @param view : View object for animation
      */
     public static void expandView(final View view) {
         final int targetHeight = view.getMeasuredHeight();
@@ -35,8 +35,8 @@ public class ViewUtil {
         view.startAnimation(animation);
     }
 
-    /*
-     * @param view
+    /**
+     * @param view : View object for animation
      */
     public static void collapseView(final View view) {
         final int initialHeight = view.getMeasuredHeight();
@@ -63,9 +63,9 @@ public class ViewUtil {
     }
 
     /*
-     * @param view
-     * @param delay
-     * @param duration
+     * @param view : View object for animation
+     * @param delay : Delay for view animation
+     * @param duration : Duration of animation
      */
     public static void animateView(View view, long delay, long duration) {
         view.setScaleX(0);

@@ -1,4 +1,4 @@
-package com.android.kickstart.utility;
+package com.android.kickstart.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,6 +14,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
+import android.view.View;
 
 import com.android.kickstart.R;
 
@@ -27,10 +28,23 @@ import java.net.URL;
 
 public class BitmapUtil {
 
-    /*
-     * @param imagePath
-     * @return
-     * @throws IOException
+    /**
+     * @param bitmap : Bitmap
+     * @param degree : Rotation degree
+     * @return : New rotated degree
+     */
+    public static Bitmap rotateBitmap(Bitmap bitmap, int degree) {
+        // Setting pre rotate
+        Matrix mMatrix = new Matrix();
+        mMatrix.preRotate(degree);
+        // Rotating Bitmap & convert to ARGB_8888
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mMatrix, true);
+    }
+
+    /**
+     * @param imagePath : ImagePath
+     * @return : Bitmap
+     * @throws IOException : Exception
      */
     public static Bitmap adjustImageOrientation(String imagePath) throws IOException {
         Bitmap image = null;
@@ -38,7 +52,7 @@ public class BitmapUtil {
         if (mFile.exists())
             image = BitmapFactory.decodeFile(mFile.getAbsolutePath());
         else
-            return image;
+            return null;
 
         Bitmap bitmap = null;
         ExifInterface exif = new ExifInterface(imagePath);
@@ -64,25 +78,68 @@ public class BitmapUtil {
         return bitmap;
     }
 
-    /*
-     * @param bitmap
-     * @param degree
-     * @return
+    /**
+     * @param context        : Activity/Fragment
+     * @param maskResourceId : Resource Id
+     * @param mBitmap        : Bitmap
+     * @return : Masked Bitmap
      */
-    public static Bitmap rotateBitmap(Bitmap bitmap, int degree) {
-        // Setting pre rotate
-        Matrix mMatrix = new Matrix();
-        mMatrix.preRotate(degree);
-        // Rotating Bitmap & convert to ARGB_8888
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mMatrix, true);
+    public static Bitmap getMaskedBitmap(Context context, int maskResourceId, Bitmap mBitmap) {
+        Bitmap mask = BitmapFactory.decodeResource(context.getResources(), maskResourceId);
+        Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas mCanvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+        mCanvas.drawBitmap(mBitmap, 0, 0, null);
+        mCanvas.drawBitmap(mask, 0, 0, paint);
+        paint.setXfermode(null);
+        mBitmap.recycle();
+        mask.recycle();
+
+        return result;
     }
 
-    /*
-     * @param bitmap
-     * @return
+    /**
+     * @param context     : Activity/Fragment
+     * @param mask_img_id : Resource Id
+     * @param color       : Color
+     * @return : Masked Bitmap
+     */
+    public static Bitmap getMaskedImageByColor(Context context, int mask_img_id, int color) {
+        Bitmap mask = BitmapFactory.decodeResource(context.getResources(), mask_img_id);
+        Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
+        // and width of the previous bitmap
+        Canvas mCanvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+        mCanvas.drawColor(color);
+        mCanvas.drawBitmap(mask, 0, 0, paint);
+        paint.setXfermode(null);
+        mask.recycle();
+        return result;
+    }
+
+    /**
+     * @param view : View
+     * @return : Bitmap of view
+     */
+    public static Bitmap getBitmapFromView(View view) {
+
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+
+        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+
+        return bitmap;
+    }
+
+    /**
+     * @param bitmap : Bitmap
+     * @return : New Bitmap
      */
     public static Bitmap cropBitmapToSquare(Bitmap bitmap) {
-
         Bitmap result = null;
         int height = bitmap.getHeight();
         int width = bitmap.getWidth();
@@ -94,11 +151,11 @@ public class BitmapUtil {
         return result;
     }
 
-    /*
-     * @param drawableName
-     * @return
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
+    /**
+     * @param drawableName : drawableName
+     * @return : resourceId
+     * @throws NoSuchFieldException   : Exception
+     * @throws IllegalAccessException : Exception
      */
     public static int getDrawableIdByName(String drawableName) throws NoSuchFieldException, IllegalAccessException {
         if (drawableName == null)
@@ -109,9 +166,9 @@ public class BitmapUtil {
     }
 
     /**
-     * @param bitmap
-     * @param round
-     * @return
+     * @param bitmap : Bitmap
+     * @param round  : Round value
+     * @return : New Bitmap
      */
     public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float round) {
         // Source image size
@@ -140,9 +197,9 @@ public class BitmapUtil {
     }
 
     /**
-     * @param bitmap
-     * @param newSize
-     * @return
+     * @param bitmap  : Bitmap
+     * @param newSize : size
+     * @return : New Bitmap
      */
     public static Bitmap getResizedBitmap(Bitmap bitmap, int newSize) {
         int width = bitmap.getWidth();
@@ -168,10 +225,10 @@ public class BitmapUtil {
     }
 
     /**
-     * @param bitmap
-     * @param newHeight
-     * @param newWidth
-     * @return
+     * @param bitmap    : Bitmap
+     * @param newHeight : Height
+     * @param newWidth  : Width
+     * @return : New Bitmap
      */
     public static Bitmap getResizedBitmap(Bitmap bitmap, int newHeight, int newWidth) {
 
@@ -190,9 +247,9 @@ public class BitmapUtil {
         return resizedBitmap;
     }
 
-    /*
-     * @param drawable
-     * @return
+    /**
+     * @param drawable : Drawable
+     * @return : Bitmap
      */
     public static Bitmap drawableToBitmap(Drawable drawable) {
         if (drawable instanceof BitmapDrawable)
@@ -211,11 +268,11 @@ public class BitmapUtil {
         return mBitmap;
     }
 
-    /*
-     * @param context
-     * @param url
-     * @return
-     * @throws IOException
+    /**
+     * @param context : Activity/Fragment
+     * @param url     : URL
+     * @return : Drawable
+     * @throws IOException : Exception
      */
     public static Drawable drawableFromUrl(Context context, String url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -226,53 +283,5 @@ public class BitmapUtil {
         return new BitmapDrawable(context.getResources(), mBitmap);
     }
 
-    /*
-     * @param context
-     * @param maskResourceId
-     * @param mBitmap
-     * @return
-     */
-    public static Bitmap getMaskedBitmap(Context context,int maskResourceId, Bitmap mBitmap) {
-        Bitmap original = mBitmap;
-        Bitmap mask = BitmapFactory.decodeResource(context.getResources(), maskResourceId);
-        Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas mCanvas = new Canvas(result);
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-        mCanvas.drawBitmap(original, 0, 0, null);
-        mCanvas.drawBitmap(mask, 0, 0, paint);
-        paint.setXfermode(null);
 
-        if (original != null) {
-            original.recycle();
-        }
-
-        if (mask != null) {
-            mask.recycle();
-        }
-
-        return result;
-    }
-
-    /*
-     * @param context
-     * @param mask_img_id
-     * @param color
-     * @return
-     */
-    public static Bitmap getMaskedImageByColor(Context context,int mask_img_id, int color) {
-        Bitmap mask = BitmapFactory.decodeResource(context.getResources(), mask_img_id);
-        Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);
-        // and width of the previous bitmap
-        Canvas mCanvas = new Canvas(result);
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-        mCanvas.drawColor(color);
-        mCanvas.drawBitmap(mask, 0, 0, paint);
-        paint.setXfermode(null);
-        if (mask != null) {
-            mask.recycle();
-        }
-        return result;
-    }
 }

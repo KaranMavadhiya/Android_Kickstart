@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Android_Kickstart</string>
     <string name="action_settings">Settings</string>
-    <string name="activity_textview">Activity Textview</string>
-    <string name="fragment_textview">Fragment Textview</string>
+    <string name="activity_textview">Activity</string>
+    <string name="fragment_textview">Main Fragment</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

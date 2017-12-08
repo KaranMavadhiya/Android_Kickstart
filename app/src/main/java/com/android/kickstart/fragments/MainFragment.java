@@ -1,6 +1,7 @@
-package com.android.kickstart.activity;
+package com.android.kickstart.fragments;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -8,33 +9,36 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.android.kickstart.R;
-import com.android.kickstart.fragment.MainFragment;
 
-public class MainActivity extends BaseActivity {
+public class MainFragment extends BaseFragment {
 
+    private TextView tvMain;
 
     @Override
-    public int getActivityView() {
-        return R.layout.activity_main;
+    public int getFragmentView() {
+        return R.layout.frament_main;
     }
 
     @Override
-    public void initializeComponents() {
+    protected void initializeComponent(View view) {
 
-        TextView tvMain = findViewById(R.id.activity_main_tv_main);
+        tvMain = (TextView) view.findViewById(R.id.frament_main_tv_main);
         tvMain.setOnClickListener(this);
 
-        //replace MainFragment to fragment_container
-        replaceFragment(R.id.activity_main_fragment_container,getFragmentManager(),new MainFragment(),false,false);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            tvMain.setText(bundle.getString("Title")+" Fragment");
+        } else {
+            return;
+        }
     }
-
 
     @Override
     public void onClick(View view) {
         /*
          * Logic for hide keyboard on click
          */
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
@@ -50,8 +54,10 @@ public class MainActivity extends BaseActivity {
 
         switch (view.getId()){
 
-            case R.id.activity_main_tv_main:
-                Snackbar.make(view, "Activity Text clicked", Snackbar.LENGTH_SHORT).show();
+            case R.id.frament_main_tv_main:
+                Snackbar.make(view, "Fragment Text clicked", Snackbar.LENGTH_SHORT).show();
+
+
                 break;
         }
     }

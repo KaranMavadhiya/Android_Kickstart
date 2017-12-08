@@ -1,4 +1,4 @@
-package com.android.kickstart.utility;
+package com.android.kickstart.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

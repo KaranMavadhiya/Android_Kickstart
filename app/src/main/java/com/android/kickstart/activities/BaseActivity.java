@@ -1,4 +1,4 @@
-package com.android.kickstart.activity;
+package com.android.kickstart.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -12,8 +12,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.android.kickstart.R;
-import com.android.kickstart.dialog.MyProgressDialog;
-import com.android.kickstart.utility.PreferenceUtil;
+import com.android.kickstart.dialogs.CustomProgressDialog;
+import com.android.kickstart.utils.PreferenceUtil;
+
 
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,7 +25,15 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * lastClickedTime contains last clicked time of view
      */
     public static final long MAX_CLICK_INTERVAL = 1000;
+    /*
+     * SharedPreferences
+     */
+    public PreferenceUtil mPreferenceUtil;
     protected long lastClickedTime = 0;
+    /*
+     * ProgressDialog
+     */
+    private CustomProgressDialog progressDialog;
 
     /*
      * abstract method for set view
@@ -37,15 +46,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     public abstract void initializeComponents();
 
-    /*
-     * ProgressDialog
-     */
-    private MyProgressDialog progressDialog;
-
-    /*
-     * SharedPreferences
-     */
-    private PreferenceUtil mPreferenceUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         setContentView(getActivityView());
 
         // Initialize preference utility
-        mPreferenceUtil = new PreferenceUtil(getApplicationContext(),getString(R.string.app_name));
+        mPreferenceUtil = new PreferenceUtil(getApplicationContext(), getString(R.string.app_name));
 
         initializeComponents();
     }
@@ -78,59 +78,60 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         }
         lastClickedTime = SystemClock.elapsedRealtime();
 
+
     }
 
-    /*
-     * @param intent
+    /**
+     * @param className Name of the next Activity (NextActivity.class)
      */
-    public void navigateActivity(Intent intent) {
-        startActivity(intent);
+    public void startActivity(Class<?> className) {
+        startActivity(new Intent(getApplicationContext(), className));
     }
 
-    /*
-     * @param intent
-     * @param enterAnim
-     * @param exitAnim
+    /**
+     * @param className  Name of the next Activity (NextActivity.class)
+     * @param resultCode Activity result code
      */
-    public void navigateActivity(Intent intent, int enterAnim, int exitAnim) {
-        startActivity(intent);
-        overridePendingTransition(enterAnim, exitAnim);
+    public void startActivity(Class<?> className, int resultCode) {
+        startActivityForResult(new Intent(getApplicationContext(), className), resultCode);
     }
 
-    /*
-     * @param intent
-     * @param resultCode
+    /**
+     * @param intent     Activity Intent
+     * @param resultCode Activity result code
      */
-    public void navigateActivityForResult(Intent intent, int resultCode) {
-        startActivityForResult(intent, resultCode);
-    }
-
-    /*
-     * @param intent
-     * @param resultCode
-     * @param enterAnim
-     * @param exitAnim
-     */
-    public void navigateActivityForResult(Intent intent, int resultCode, int enterAnim, int exitAnim) {
-        startActivityForResult(intent, resultCode);
-        overridePendingTransition(enterAnim, exitAnim);
-    }
-
-    /*
-     * @param intent
-     * @param resultCode
-     */
-    public void navigateActivityForResultBack(Intent intent, int resultCode) {
+    public void startActivityForResultBack(Intent intent, int resultCode) {
         setResult(resultCode, intent);
     }
 
-    /*
-     * @param intent
-     * @param resultCode
-     * @param enterAnim
-     * @param exitAnim
+    /**
+     * @param className Name of the next Activity (NextActivity.class)
+     * @param enterAnim enter animation
+     * @param exitAnim  exit animation
      */
-    public void navigateActivityForResultBack(Intent intent, int resultCode, int enterAnim, int exitAnim) {
+    public void startActivity(Class<?> className, int enterAnim, int exitAnim) {
+        startActivity(new Intent(getApplicationContext(), className));
+        overridePendingTransition(enterAnim, exitAnim);
+    }
+
+    /**
+     * @param className  Name of the next Activity (NextActivity.class)
+     * @param resultCode Activity result code
+     * @param enterAnim  enter animation
+     * @param exitAnim   exit animation
+     */
+    public void startActivity(Class<?> className, int resultCode, int enterAnim, int exitAnim) {
+        startActivityForResult(new Intent(getApplicationContext(), className), resultCode);
+        overridePendingTransition(enterAnim, exitAnim);
+    }
+
+    /**
+     * @param intent     Activity Intent
+     * @param resultCode Activity result code
+     * @param enterAnim  enter animation
+     * @param exitAnim   exit animation
+     */
+    public void startActivityForResultBack(Intent intent, int resultCode, int enterAnim, int exitAnim) {
         setResult(resultCode, intent);
         overridePendingTransition(enterAnim, exitAnim);
     }
@@ -143,16 +144,15 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * @param nextFragment                New Fragment to be loaded into fragmentContainerResourceId
      * @param requiredAnimation           true if screen transition animation is required
      * @param commitAllowingStateLoss     true if commitAllowingStateLoss is needed
-     * @return true if new Fragment added successfully into container, false otherwise
-     * @throws IllegalStateException Exception if Fragment transaction is invalid
+     * @return true                       if new Fragment added successfully into container, false otherwise
      */
-    public boolean addFragment(final int fragmentContainerResourceId, final Fragment currentFragment, final Fragment nextFragment, final boolean requiredAnimation, final boolean commitAllowingStateLoss) {
+    public boolean addFragment(int fragmentContainerResourceId, Fragment currentFragment, Fragment nextFragment, boolean requiredAnimation, boolean commitAllowingStateLoss) {
         try {
             if (currentFragment == null || nextFragment == null) {
                 return false;
             }
-            final FragmentManager fragmentManager = getFragmentManager();
-            final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             if (requiredAnimation) {
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_NONE);
@@ -161,7 +161,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             fragmentTransaction.add(fragmentContainerResourceId, nextFragment, nextFragment.getClass().getSimpleName());
             fragmentTransaction.addToBackStack(nextFragment.getClass().getSimpleName());
 
-            final Fragment parentFragment;
+            Fragment parentFragment;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 parentFragment = currentFragment.getParentFragment();
                 if (parentFragment == null) {
@@ -176,7 +176,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             } else {
                 fragmentTransaction.commitAllowingStateLoss();
             }
-
             return true;
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -193,14 +192,14 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * @param nextFragment                New Fragment to be loaded into fragmentContainerResourceId
      * @param requiredAnimation           true if screen transition animation is required
      * @param commitAllowingStateLoss     true if commitAllowingStateLoss is needed
-     * @return true if new Fragment added successfully into container, false otherwise
+     * @return true                       if new Fragment added successfully into container, false otherwise
      */
-    public boolean replaceFragment(final int fragmentContainerResourceId, final FragmentManager fragmentManager, final Fragment nextFragment, final boolean requiredAnimation, final boolean commitAllowingStateLoss) {
+    public boolean replaceFragment(int fragmentContainerResourceId, FragmentManager fragmentManager, Fragment nextFragment, boolean requiredAnimation, boolean commitAllowingStateLoss) {
         try {
             if (nextFragment == null || fragmentManager == null) {
                 return false;
             }
-            final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (requiredAnimation) {
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_NONE);
             }
@@ -211,7 +210,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             } else {
                 fragmentTransaction.commitAllowingStateLoss();
             }
-
             return true;
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -219,13 +217,20 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         return false;
     }
 
-    private void displayDialog(String message,boolean isCancelable) {
-        progressDialog = new MyProgressDialog(this,message, isCancelable);
+    /**
+     * @param message      ProgressDialog message
+     * @param isCancelable true if user need to cancel dialog on touch else false
+     */
+    private void displayDialog(String message, boolean isCancelable) {
+        progressDialog = new CustomProgressDialog(this, message, isCancelable);
         if (!isFinishing()) {
             progressDialog.show();
         }
     }
 
+    /**
+     *
+     */
     private void dismissDialog() {
         if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();

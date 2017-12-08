@@ -1,5 +1,4 @@
-package com.android.kickstart.fragment;
-
+package com.android.kickstart.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -13,9 +12,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.android.kickstart.R;
-import com.android.kickstart.activity.BaseActivity;
-import com.android.kickstart.dialog.MyProgressDialog;
-import com.android.kickstart.utility.PreferenceUtil;
+import com.android.kickstart.activities.BaseActivity;
+import com.android.kickstart.dialogs.CustomProgressDialog;
+import com.android.kickstart.utils.PreferenceUtil;
+
 
 /*
  * Base class for all the fragments used, manages common feature needed in the most of the fragments
@@ -28,6 +28,14 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
      */
     public static final long MAX_CLICK_INTERVAL = 1000;
     protected long lastClickedTime = 0;
+    /*
+     * ProgressDialog
+     */
+    protected CustomProgressDialog progressDialog;
+    /*
+     * SharedPreferences
+     */
+    private PreferenceUtil mPreferenceUtil;
 
     /*
      *  abstract method for set view
@@ -42,28 +50,18 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
      */
     protected abstract void initializeComponent(View view);
 
-    /*
-     * ProgressDialog
-     */
-    protected MyProgressDialog progressDialog;
-
-    /*
-     * SharedPreferences
-     */
-    private PreferenceUtil mPreferenceUtil;
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(getFragmentView(), container, false);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Initialize preference utility
-        mPreferenceUtil = new PreferenceUtil(getActivity(),getString(R.string.app_name));
+        mPreferenceUtil = new PreferenceUtil(getActivity(), getString(R.string.app_name));
 
         initializeComponent(view);
     }
@@ -85,7 +83,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
      * @throws ClassCastException    Throws exception if getActivity() is not an instance of BaseActivity
      * @throws IllegalStateException Exception if Fragment transaction is invalid
      */
-    protected boolean addFragment(final int container, final Fragment currentFragment, final Fragment nextFragment, final boolean requiredAnimation, final boolean commitAllowingStateLoss) throws ClassCastException, IllegalStateException {
+    protected boolean addFragment(int container, Fragment currentFragment, Fragment nextFragment, boolean requiredAnimation, boolean commitAllowingStateLoss) throws ClassCastException, IllegalStateException {
         if (getActivity() != null) {
             if (getActivity() instanceof BaseActivity) {
                 return ((BaseActivity) getActivity()).addFragment(container, currentFragment, nextFragment, requiredAnimation, commitAllowingStateLoss);
@@ -108,7 +106,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
      * @throws ClassCastException    Throws exception if getActivity() is not an instance of BaseActivity
      * @throws IllegalStateException Exception if Fragment transaction is invalid
      */
-    protected boolean replaceFragment(final int container, final FragmentManager fragmentManager, final Fragment nextFragment, final boolean requiredAnimation, final boolean commitAllowingStateLoss) throws ClassCastException, IllegalStateException {
+    protected boolean replaceFragment(int container, FragmentManager fragmentManager, Fragment nextFragment, boolean requiredAnimation, boolean commitAllowingStateLoss) throws ClassCastException, IllegalStateException {
         if (getActivity() != null) {
             if (getActivity() instanceof BaseActivity) {
                 return ((BaseActivity) getActivity()).replaceFragment(container, fragmentManager, nextFragment, requiredAnimation, commitAllowingStateLoss);
@@ -149,7 +147,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     }
 
     public void displayDialog(String message, boolean isCancelable) {
-        progressDialog = new MyProgressDialog(getActivity(), message, isCancelable);
+        progressDialog = new CustomProgressDialog(getActivity(), message, isCancelable);
         if (!getActivity().isFinishing()) {
             progressDialog.show();
         }

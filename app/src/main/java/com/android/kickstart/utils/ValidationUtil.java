@@ -1,4 +1,4 @@
-package com.android.kickstart.utility;
+package com.android.kickstart.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -123,9 +123,9 @@ public class ValidationUtil {
     /**
      * Checks Intent Activity Available or Not
      *
-     * @param context
-     * @param intent
-     * @return
+     * @param context : Activity/Fragment Context to getPackageManager
+     * @param intent : Intent
+     * @return : true if Activity for intent is available else false
      */
     private static boolean isActivityForIntentAvailable(Context context, Intent intent) {
         PackageManager packageManager = context.getPackageManager();
@@ -164,13 +164,13 @@ public class ValidationUtil {
     }
 
     /**
-     * @param context to check network available or not
-     * @return
+     * @param context Activity/Fragment Context to check network available or not
+     * @return true if network is connected
      */
     public static boolean isInternetAvailable(Context context) {
         if (context != null) {
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
+            return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
         } else {
             return false;
         }
