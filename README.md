@@ -1,4 +1,4 @@
-# Android_Kickstart
+# Android Kickstart
 The goal of this project is to help Developers in development.
 
 ## Activity
