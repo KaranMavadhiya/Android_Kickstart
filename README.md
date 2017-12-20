@@ -17,7 +17,7 @@ The goal of this project is to help Developers in development.
 * customview/RoundedDrawable.java
 * customview/RoundedImageView.java
 * customview/SquareImageView.java
-customview/SquareLinearLayout.java
+* customview/SquareLinearLayout.java
 
 ## Dialog
 * dialogs/CustomProgressDialog.java to show progress bind with BaseActivity and BaseFragment
