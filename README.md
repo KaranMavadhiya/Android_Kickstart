@@ -2,39 +2,40 @@
 The goal of this project is to help Developers in development.
 
 ## Activity
-+ [BaseActivity] (/app/src/main/java/com/android/kickstart/activities/BaseActivity.java)
++ [BaseActivity](/app/src/main/java/com/android/kickstart/activities/BaseActivity.java)
 
 ## CustomView
-* customview/CustomFontButton.java
-* customview/CustomFontCheckBox.java
-* customview/CustomFontEditText.java
-* customview/CustomFontRadioButton.java
-* customview/CustomFontTextView.java
-* customview/CustomTypeFaceSpan.java
-* customview/CustomViewPager.java
-* customview/FragmentStatePagerAdapter.java
-* customview/NonScrollListView.java
-* customview/RoundedDrawable.java
-* customview/RoundedImageView.java
-* customview/SquareImageView.java
-* customview/SquareLinearLayout.java
++ [CustomFontButton](/app/src/main/java/com/android/kickstart/customview/CustomFontButton.java)
++ [CustomFontCheckBox](/app/src/main/java/com/android/kickstart/customview/CustomFontCheckBox.java)
++ [CustomFontEditText](/app/src/main/java/com/android/kickstart/customview/CustomFontEditText.java)
++ [CustomFontRadioButton](/app/src/main/java/com/android/kickstart/customview/CustomFontRadioButton.java)
++ [CustomFontTextView](/app/src/main/java/com/android/kickstart/customview/CustomFontTextView.java)
++ [CustomTypeFaceSpan](/app/src/main/java/com/android/kickstart/customview/CustomTypeFaceSpan.java)
++ [CustomViewPager](/app/src/main/java/com/android/kickstart/customview/CustomViewPager.java)
++ [FragmentStatePagerAdapter](/app/src/main/java/com/android/kickstart/customview/FragmentStatePagerAdapter.java)
++ [NonScrollListView](/app/src/main/java/com/android/kickstart/customview/NonScrollListView.java)
++ [RoundedDrawable](/app/src/main/java/com/android/kickstart/customview/RoundedDrawable.java)
++ [RoundedImageView](/app/src/main/java/com/android/kickstart/customview/RoundedImageView.java)
++ [SquareImageView](/app/src/main/java/com/android/kickstart/customview/SquareImageView.java)
++ [SquareLinearLayout](/app/src/main/java/com/android/kickstart/customview/SquareLinearLayout.java)
 
 ## Dialog
-* dialogs/CustomProgressDialog.java to show progress bind with BaseActivity and BaseFragment
++ [CustomProgressDialog](/app/src/main/java/com/android/kickstart/dialogs/CustomProgressDialog.java)
 
 ## Fragment
-* fragments/BaseFrament.java to use as parent fragment
++ [BaseFrament](/app/src/main/java/com/android/kickstart/fragments/BaseFrament.java)
 
 ## Utility
-* utils/BitmapUtil.java
-* utils/CaptchUtil.java
-* utils/CommonUtil.java
-* utils/DateUtil.java
-* utils/DialogUtil.java
-* utils/EncriptionUtil.java
-* utils/IntentUtils.java 
-* utils/LogUtil.java 
-* utils/NetorkUtil.java
-* utils/PreferenceUtil.java 
-* utils/ValidationUtil.java
-* utils/ViewUtil.java
++ [BitmapUtil](/app/src/main/java/com/android/kickstart/utils/BitmapUtil.java)
++ [CaptchUtil](/app/src/main/java/com/android/kickstart/utils/CaptchUtil.java)
++ [CommonUtil](/app/src/main/java/com/android/kickstart/utils/CommonUtil.java)
++ [DateUtil](/app/src/main/java/com/android/kickstart/utils/DateUtil.java)
++ [DialogUtil](/app/src/main/java/com/android/kickstart/utils/DialogUtil.java)
++ [EncriptionUtil](/app/src/main/java/com/android/kickstart/utils/EncriptionUtil.java)
++ [IntentUtils](/app/src/main/java/com/android/kickstart/utils/IntentUtils.java)
++ [LogUtil](/app/src/main/java/com/android/kickstart/utils/LogUtil.java)
++ [NetorkUtil](/app/src/main/java/com/android/kickstart/utils/NetorkUtil.java)
++ [PreferenceUtil](/app/src/main/java/com/android/kickstart/utils/PreferenceUtil.java)
++ [ValidationUtil](/app/src/main/java/com/android/kickstart/utils/ValidationUtil.java)
++ [ViewUtil](/app/src/main/java/com/android/kickstart/utils/ViewUtil.java)
+
