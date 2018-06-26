@@ -2,7 +2,7 @@
 The goal of this project is to help Developers in development.
 
 ## Activity
-* activities/BaseActivity.java to use as parent activity 
++ [BaseActivity] (/app/src/main/java/com/android/kickstart/activities/BaseActivity.java)
 
 ## CustomView
 * customview/CustomFontButton.java
