@@ -111,6 +111,16 @@ public class CommonUtil {
         float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return px;
     }
+    
+    // Converts the number to K, M suffix
+    // Ex: 5500 will be displayed as 5.5k
+    public static String convertToSuffix(long count) {
+        if (count < 1000) return "" + count;
+        int exp = (int) (Math.log(count) / Math.log(1000));
+        return String.format("%.1f%c",
+                count / Math.pow(1000, exp),
+                "kmgtpe".charAt(exp - 1));
+    }
 
     /**
      * This method converts device specific pixels to density independent pixels.
