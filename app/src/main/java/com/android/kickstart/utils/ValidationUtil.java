@@ -69,6 +69,31 @@ public class ValidationUtil {
     public static boolean isValidEmail(final String email) {
         return !isNullString(email) && (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
     }
+    
+     /**
+     * Validate password
+     *
+     * (^(?=[a-zA-Z0-9])(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%_\-.]).{8,20})
+     *
+     * (			      # Start of group
+     * ^(?=[a-zA-Z0-9])   # Must start with alpha numeric not special character
+     * (?=.*\d)           # Must contains one digit from 0-9
+     * (?=.*[a-z])	      # Must contains one lowercase characters
+     * (?=.*[A-Z])	      # Must contains one uppercase characters
+     * (?=.*[@#$%])       # Must contains one special symbols in the list "!@#$%_\-."
+     * .		          # Match anything with previous condition checking
+     * {8,20}	          # Length at least 8 characters and maximum of 20
+     * )			      # End of group
+     *
+     * @param password Password string
+     * @return boolean true if password match above condition else false
+     */
+    public static boolean isValidPassword(String password) {
+        Pattern PASSWORD_PATTERN = Pattern.compile( "(^(?=[a-zA-Z0-9])(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%_\\-.]).{8,20})");
+        return !TextUtils.isEmpty( password ) && PASSWORD_PATTERN.matcher( password ).matches();
+    }
+    
+    
 
     /**
      * @param pinCode to be verified
