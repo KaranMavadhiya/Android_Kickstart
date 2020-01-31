@@ -253,4 +253,18 @@ public class CommonUtil {
         in.close();
         return stringBuilder.toString();
     }
+    
+    public static String getMimeType(Uri uri) {           
+    String mimeType = null;
+    if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+        ContentResolver cr = getAppContext().getContentResolver();
+        mimeType = cr.getType(uri);
+    } else {
+        String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri
+                .toString());
+        mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                fileExtension.toLowerCase());
+    }
+    return mimeType;
+    }
 }
